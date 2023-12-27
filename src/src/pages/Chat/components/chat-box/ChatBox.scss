@@ -1,0 +1,48 @@
+.chat-box {
+    display: grid;
+    grid-template-columns: 50px auto;
+    align-items: center;
+    flex-direction: column;
+    padding: 5px 10px;
+    border-bottom: 1px solid #A4ABBD;
+    font-size: 17px;
+
+    &:hover {
+        background-color: #008594;
+    }
+
+    &__image{
+        border-radius: 100%;
+        background-color: #A4ABBD;
+        padding: 5px;
+    }
+
+    
+    &__info{
+        width: 100%;
+        display: grid;
+        grid-template-rows: repeat(2, minmax(10px, 1fr));
+
+        &__user{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            &__name{
+                font-weight: 800;
+            }
+
+            &__date{
+                font-size: 12px;
+            }
+        }
+        
+        &__message{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 15px;
+        }
+    }
+}

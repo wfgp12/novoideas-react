@@ -5,6 +5,11 @@
     flex-direction: column;
     align-items: center;
 
+    &__title{
+        color: #566573;
+
+    }
+
     &__form {
         display: flex;
         flex-direction: column;
@@ -41,5 +46,18 @@
             font-size: 20px;
             border-radius: 8px;
         }
+    }
+
+    &__loading{
+        display: grid;
+        place-items: center;
+        color: white;
+        font-size: 20px;
+    }
+}
+
+@media(max-width: 500px){
+    .LoginPage{
+
     }
 }

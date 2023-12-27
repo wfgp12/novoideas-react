@@ -9,7 +9,7 @@ interface AppSliceState {
 const initialState: AppSliceState = {
     user: null,
     isAuth : false,
-    token: ''
+    token: '',
 }
 
 export const authenticationSlice = createSlice({

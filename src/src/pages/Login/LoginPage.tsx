@@ -1,77 +1,91 @@
 // Actions
-import { loginAction } from '../../redux/slices/authSlice';
+import { loginAction } from "../../redux/slices/authSlice";
+import { setChats, setLoading } from "../../redux/slices/appSlice";
 
 // Libraries
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React from "react";
 
 // Models
-import { User } from '../../models/user';
+import { User } from "../../models/user";
 
-// Store - hooks
-import { useAppDispatch } from '../../redux/store/hooks';
+// hooks
+import { useAppDispatch } from "../../redux/store/hooks";
+import useForm from "../../hooks/useForm";
 
 // Styles
-import './LoginPage.scss'
+import "./LoginPage.scss";
+
+// Services
+import { loginService } from "../../services/auth.service";
+
+// Utils
+import localStorageUtility from "../../utils/localstorage";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
 
-  const [state, setState] = useState<User>({
-    username: "",
-    password: ""
-  })
+  const { state, handleChange } = useForm<User>({
+    user: "",
+    pass: "",
+  });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(loginAction({
-      user: state,
-      isAuth: true
-    }))
-    return
-  };
-
-  const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>, key: string) => {
-    setState((prevState) => ({ 
-      ...prevState, 
-      [key]: target.value 
-    }))
-    return
+    dispatch(setLoading(true));
+    try {
+      const chats = await loginService(state);
+      if (chats) {
+        localStorageUtility.setItem("session", state);
+        dispatch(
+          loginAction({
+            user: state,
+            isAuth: true,
+          })
+        );
+        dispatch(setChats(chats));
+        dispatch(setLoading(false));
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
   return (
-    <div className='LoginPage'>
-      <div>
-        <h1>LOGIN PAGE</h1>
+    <div className="LoginPage">
+      <div  className="LoginPage__title">
+        <h1>INICIO DE SESIÓN</h1>
       </div>
-      <form id='loginForm' className='LoginPage__form' onSubmit={handleSubmit}>
-        <div className='LoginPage__form__field'>
-          <label className='LoginPage__form__label'>username :</label>
+      <form id="loginForm" className="LoginPage__form" onSubmit={handleSubmit}>
+        <div className="LoginPage__form__field">
+          <label className="LoginPage__form__label">Usuario :</label>
           <input
-            type='email'
-            className='LoginPage__form__input'
-            value={state.username}
-            onChange={(e) => handleChange(e, 'username')}
+            type="email"
+            name="user"
+            className="LoginPage__form__input"
+            value={state.user}
+            onChange={handleChange}
             required
           />
         </div>
-        <div className='LoginPage__form__field'>
-          <label className='LoginPage__form__label'>password: </label>
+        <div className="LoginPage__form__field">
+          <label className="LoginPage__form__label">password: </label>
           <input
-            type='password'
-            className='LoginPage__form__input'
-            value={state.password}
-            onChange={(e) => handleChange(e, 'password')}
+            type="password"
+            name="pass"
+            className="LoginPage__form__input"
+            value={state.pass}
+            onChange={handleChange}
             required
           />
         </div>
-        <button className='LoginPage__form__button' type='submit'>Log in</button>
+        <button className="LoginPage__form__button" type="submit">
+          Log in
+        </button>
       </form>
-        <p>you do not have an account</p>
-        <Link to="/register" >Create Account</Link>
     </div>
-
-  )
+  );
 };
 
 export default LoginPage;

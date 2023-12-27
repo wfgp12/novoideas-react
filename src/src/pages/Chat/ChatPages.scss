@@ -1,0 +1,30 @@
+.chat-page {
+    display: grid;
+    width: 100%;
+    height: 100vh;
+    grid-template-columns: 350px auto;
+
+    &__menu {
+        direction: flex;
+        flex-direction: column;
+        border-right: 1px solid #707788;
+        padding: 0 5px;
+        background-color: #00577F;
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    &__chat{
+        display: grid;
+        grid-template-rows: 60px auto;
+    }
+}
+
+@media (max-width: 500px) {
+    .chat-page {
+        grid-template-columns: 1fr;
+    }
+}

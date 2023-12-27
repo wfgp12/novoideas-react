@@ -1,24 +1,46 @@
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useState } from "react";
+type FormValues<T> = {
+    [K in keyof T]: string;
+};
 
-const useForm = (initialState = {}) => {
-    const [state, setState] = useState(initialState);
+interface FormFunctions<T> {
+    state: FormValues<T>;
+    handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    resetForm: () => void;
+}
+
+const useForm = <T extends Record<string, any>>(initialState: T): FormFunctions<T> => {
+    const [state, setState] = useState<FormValues<T>>(() => {
+        const defaultState: FormValues<T> = {} as FormValues<T>;
+        for (const key in initialState) {
+            defaultState[key] = '';
+        }
+        return defaultState;
+    });
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setState({
-            ...state,
+        setState((prev) => ({
+            ...prev,
             [name]: value,
-        });
+        }));
     };
 
     const resetForm = () => {
-        setState(initialState);
+        setState(() => {
+            const resetState: FormValues<T> = {} as FormValues<T>;
+            for (const key in initialState) {
+                resetState[key] = '';
+            }
+            return resetState;
+        });
     };
+
     return {
         state,
         handleChange,
-        resetForm
-    }
-}
+        resetForm,
+    };
+};
 
-export default useForm
+export default useForm;
