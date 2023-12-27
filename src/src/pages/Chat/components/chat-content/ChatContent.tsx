@@ -23,7 +23,7 @@ const ChatContent = ({ chatSelected }: IChatContent) => {
   });
 
   const handleSubmit = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && state.chatInput !== "") {
       setChatStack([...chatStack, state.chatInput]);
       resetForm();
     }
@@ -48,7 +48,7 @@ const ChatContent = ({ chatSelected }: IChatContent) => {
       <div className="chat-content__history">
         {chatStack.map((message, index) => (
           <span key={index} className="chat-content__history__message">
-            {typeof message === "string" ? message : <>{message.direccion}</>}
+            {typeof message === "string" ? message : <> {message.direccion}</>}
           </span>
         ))}
         <input

@@ -1,0 +1,64 @@
+.home-page {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 20px;
+
+    display: grid;
+    grid-template-rows: 80px;
+    grid-auto-flow: row;
+    justify-items: center;
+    row-gap: 15px;
+
+    color: #566573;
+
+    &__avatar{
+        display: flex;
+        align-items: flex-end;
+        
+        &>img{
+            width: 200px;
+            border-radius: 100px;
+        }
+    }
+
+    &__title{font-size: 30px;
+        font-weight: 800;
+    }
+
+    &__field{
+        width: 100%;
+        text-align: center;
+        
+        &__separator{
+            border: 1px solid black;
+            margin: 0 5px;
+        }
+    }
+    
+    &__contact{
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-top: 5px;
+
+        &__text{
+            color: #213547;
+            font-weight: 500;
+        }
+    }
+
+    &__text{
+        font-size: 20px;
+        font-weight: 100;
+    }
+    
+}
+
+@media(max-width: 500px){
+    .home-page {
+        &__contact{
+            flex-direction: column;
+text-align: center;        }
+    }
+}

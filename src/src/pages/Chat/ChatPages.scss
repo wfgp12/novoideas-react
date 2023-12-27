@@ -20,6 +20,7 @@
     &__chat{
         display: grid;
         grid-template-rows: 60px auto;
+        overflow: hidden;
     }
 }
 
